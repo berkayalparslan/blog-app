@@ -31,4 +31,9 @@ describe('/posts ENDPOINT', () => {
         expect(response.body).toHaveProperty('title', 'Updated Post');
         expect(response.body).toHaveProperty('content', 'Updated content');
     });
+
+    it('DELETE method should delete a specific post', async () => {
+        const response = await request(app).delete('/posts/1');
+        expect(response.status).toBe(204);
+    });
 });

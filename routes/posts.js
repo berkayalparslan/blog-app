@@ -48,4 +48,14 @@ router.put('/:id', function(req, res, next) {
   return res.json(post);
 });
 
+router.delete('/:id', function(req, res, next) {
+  const post = posts.find(post => post.id === parseInt(req.params.id));
+  if (!post) {
+    return res.status(404).json({ message: 'Post not found' });
+  }
+  const index = posts.indexOf(post);
+  posts.splice(index, 1);
+  return res.status(204).json();
+})
+
 module.exports = router;
