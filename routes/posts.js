@@ -1,60 +1,49 @@
 var express = require('express');
 var router = express.Router();
+const Post = require('../models/post');
 
-const posts = [
-  {
-    id: 1,
-    title: 'Post 1',
-    content: 'Content 1'
-  },
-  {
-    id: 2,
-    title: 'Post 2',
-    content: 'Content 2'
-  }
-]
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
+  const posts = await Post.find();
   return res.json(posts);
 });
 
-router.get('/:id', function(req, res, next) {
-  const post = posts.find(post => post.id === parseInt(req.params.id));
+router.get('/:id', async function(req, res, next) {
+  const post = await Post.findOne(post => post.id === parseInt(req.params.id));
   if (!post) {
     return res.status(404).json({ message: 'Post not found' });
   }
   return res.json(post);
 });
 
-router.post('/', function(req, res, next) {
-  const post = {
-    id: posts.length + 1,
+router.post('/', async function(req, res, next) {
+  const newPost = new Post({
     title: req.body.title,
     content: req.body.content,
     createdDate: new Date()
-  };
-  posts.push(post);
-  return res.status(201).json(post);
+  });
+  const savedPost = await newPost.save();
+  return res.status(201).json(savedPost);
 });
 
-router.put('/:id', function(req, res, next) {
-  const post = posts.find(post => post.id === parseInt(req.params.id));
-  if (!post) {
+router.put('/:id', async function(req, res, next) {
+  const postId = parseInt(req.params.id);
+  const {title, description} = req.body;
+  const updatedPost = await Post.findByIdAndUpdate(postId, {title, description}, {new: true});
+
+  if (!updatedPost) {
     return res.status(404).json({ message: 'Post not found' });
   }
-  post.title = req.body.title;
-  post.content = req.body.content;
-  return res.json(post);
+  return res.json(updatedPost);
 });
 
-router.delete('/:id', function(req, res, next) {
-  const post = posts.find(post => post.id === parseInt(req.params.id));
-  if (!post) {
+router.delete('/:id', async function(req, res, next) {
+  const postId = parseInt(req.params.id);
+  const deletedPost = await Post.findByIdAndDelete(postId);
+
+  if (!deletedPost) {
     return res.status(404).json({ message: 'Post not found' });
   }
-  const index = posts.indexOf(post);
-  posts.splice(index, 1);
   return res.status(204).json();
 })
 
