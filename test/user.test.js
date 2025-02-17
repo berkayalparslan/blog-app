@@ -21,7 +21,7 @@ describe('/users ENDPOINT', () => {
         expect(response.body).toHaveProperty('name', 'Admin Adminoglu');
         expect(response.body).toHaveProperty('email', 'admin@example.com');
     });
-    it('PUT method should update a specific user', async () => {
+    it('/email PUT method should update a specific user email', async () => {
         const response = await request(app).put('/users/1').send({ name: 'Updated Name', email: 'updated@example' });
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('id', 1);
