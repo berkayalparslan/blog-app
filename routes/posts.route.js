@@ -10,7 +10,7 @@ router.get('/', async function(req, res, next) {
 });
 
 router.get('/:id', async function(req, res, next) {
-  const postId = parseInt(req.params.id);
+  const postId = req.params.id;
   const post = await postService.getById(postId);
 
   if (!post) {
@@ -26,9 +26,9 @@ router.post('/', async function(req, res, next) {
 });
 
 router.put('/:id', async function(req, res, next) {
-  const postId = parseInt(req.params.id);
-  const {title, description} = req.body;
-  const updatedPost  = await postService.update(postId, {title, description});
+  const postId = req.params.id
+  const {title, content} = req.body;
+  const updatedPost  = await postService.update(postId, {title, content});
 
   if (!updatedPost) {
     return res.status(404).json({ message: 'Post not found' });
@@ -37,7 +37,7 @@ router.put('/:id', async function(req, res, next) {
 });
 
 router.delete('/:id', async function(req, res, next) {
-  const postId = parseInt(req.params.id);
+  const postId = req.params.id
   const deletedPost = await postService.remove(postId);
 
   if (!deletedPost) {

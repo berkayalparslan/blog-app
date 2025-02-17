@@ -5,7 +5,7 @@ const getAll = async () => {
 }
 
 const getById = async (id) => {
-    return await Post.findOne(id);
+    return await Post.findById(id);
 }
 
 const create = async (post) => {

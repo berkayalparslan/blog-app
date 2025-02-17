@@ -9,7 +9,7 @@ router.get("/", async function (req, res, next) {
 });
 
 router.get("/:id", async function (req, res, next) {
-  const userId = parseInt(req.params.id);
+  const userId = req.params.id;
   const user = await userService.getById(userId);
 
   if (!user) {
@@ -25,7 +25,7 @@ router.post('/', async function(req,res,next) {
 });
 
 router.put('/:id/email', async function(req,res,next) {
-  const userId = parseInt(req.params.id);
+  const userId = req.params.id
   const {email} = req.body;
   const updatedUser = await userService.updateEmail(userId, {email});
   
@@ -36,7 +36,7 @@ router.put('/:id/email', async function(req,res,next) {
 })
 
 router.delete('/:id', async function(req,res,next) {
-  const userId = parseInt(req.params.id);
+  const userId = req.params.id
   const user = await userService.remove(userId);
 
   if (!user) {

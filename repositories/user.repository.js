@@ -5,11 +5,11 @@ const getAll = async () => {
 }
 
 const getById = async (id) => {
-    return await User.findOne(id);
+    return await User.findById(id);
 }
 
 const create = async (user) => {
-    
+
     return await user.save(user);
 }
 

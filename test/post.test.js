@@ -5,7 +5,7 @@ describe('/posts ENDPOINT', () => {
     it('POST method should create a new post', async () => {
         const response = await request(app).post('/posts').send({ title: 'Test Post', content: 'This is a test post' });
         expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty('id');
+        expect(response.body).toHaveProperty('_id');
         expect(response.body).toHaveProperty('title', 'Test Post');
         expect(response.body).toHaveProperty('content', 'This is a test post');
     });
@@ -17,23 +17,26 @@ describe('/posts ENDPOINT', () => {
     });
 
     it('GET method should retrieve a specific post', async () => {
-        const response = await request(app).get('/posts/1');
+        const newPost = await request(app).post('/posts').send({ title: 'Test Post', content: 'This is a test post' });
+        const response = await request(app).get(`/posts/${newPost.body._id}`);
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('id', 1);
-        expect(response.body).toHaveProperty('title', 'Post 1');
-        expect(response.body).toHaveProperty('content', 'Content 1');
+        expect(response.body).toHaveProperty('_id', newPost.body._id);
+        expect(response.body).toHaveProperty('title', 'Test Post');
+        expect(response.body).toHaveProperty('content', 'This is a test post');
     });
 
     it('PUT method should update a specific post', async () => {
-        const response = await request(app).put('/posts/1').send({ title: 'Updated Post', content: 'Updated content' });
+        const newPost = await request(app).post('/posts').send({ title: 'Test Post', content: 'This is a test post' });
+        const response = await request(app).put(`/posts/${newPost.body._id}`).send({ title: 'Updated Post', content: 'Updated content' });
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('id', 1);
+        expect(response.body).toHaveProperty('_id', newPost.body._id);
         expect(response.body).toHaveProperty('title', 'Updated Post');
         expect(response.body).toHaveProperty('content', 'Updated content');
     });
 
     it('DELETE method should delete a specific post', async () => {
-        const response = await request(app).delete('/posts/1');
+        const newPost = await request(app).post('/posts').send({ title: 'Test Post', content: 'This is a test post' });
+        const response = await request(app).delete(`/posts/${newPost.body._id}`);
         expect(response.status).toBe(204);
     });
 });
