@@ -18,6 +18,10 @@ const create = async ({ name, email, password }) => {
         password: password,
         createdDate: new Date()
       });
+    const existingUser = (await userRepository.getAll()).find(user => user.email === email);
+    if (existingUser) {
+        return null;
+    }
     return await userRepository.create(newUser);
 }
 

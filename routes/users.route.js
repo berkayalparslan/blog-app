@@ -21,6 +21,10 @@ router.get("/:id", async function (req, res, next) {
 router.post('/', async function(req,res,next) {
   const {name, email} = req.body;
   const user = await userService.create({name, email});
+
+  if (!user) {
+    return res.status(400).json({ message: 'This email already exists' });
+  }
   return res.status(201).json(user);
 });
 
