@@ -8,3 +8,8 @@ Blog API written in Express.js using MongoDB.
 - Posts CRUD [done]
 - Comments CRUD [todo]
 - Auth [todo]
+
+## Requirements
+
+- Environment variable: 
+    - **DB**: connection string to database, e.g. *mongodb://localhost:27017/[database_name]*
